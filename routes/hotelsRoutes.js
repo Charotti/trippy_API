@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Joi = require("Joi");
 
 const hotels = [
   {
@@ -36,8 +37,46 @@ const hotels = [
     priceCategory: 2,
   },
 ];
+// JOI VALIDATION SHEMA
+const hotelSchema = Joi.object({
+  name: Joi.string().required(),
+  address: Joi.string().required(),
+  city: Joi.string().required(),
+  country: Joi.string().alphanum().required(),
+  stars: Joi.number().integer(),
+  hasSpa: Joi.boolean(),
+  hasPool: Joi.boolean(),
+  priceCategory: Joi.number().integer().min(1).max(3).required(),
+});
+function validHotel(req, res, _next) {
+  const validation = hotelSchema.validate(req.body);
+  if (validation.error) {
+    return res.status(400).json({
+      message: "Bad request (400)",
+      description: validation.error.details[0].message,
+    });
+  }
+}
+
 // GET ALL HOTELS
-router.get("/", (req, res) => {
+router.get("/", (_req, res) => {
   res.json(hotels);
+});
+// GET HOTEL BY ID
+router.get("/id/:id", (req, res) => {
+  const hotel = hotels.find((hotel) => {
+    return hotel.id.toString() === req.params.id;
+  });
+  if (!hotel) {
+    return res.send(`Hotel with id: ${req.params.id} not found`);
+  }
+  res.json(hotel);
+});
+// POST AN HOTEL
+router.post("/", validHotel, (req, res) => {
+  const hotel = req.body;
+  hotel.id = hotels.length + 1;
+  hotels.push(hotel);
+  res.status(201).json({ message: "Hotel added", hotel });
 });
 module.exports = router;
