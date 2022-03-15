@@ -1,4 +1,5 @@
 const express = require("express");
+const req = require("express/lib/request");
 const router = express.Router();
 const Joi = require("Joi");
 
@@ -60,8 +61,32 @@ function validHotel(req, res, next) {
 }
 
 // GET ALL HOTELS
-router.get("/", (_req, res) => {
-  res.json(hotels);
+router.get("/", (req, res) => {
+  let currentHotel = hotels;
+  if (req.query.country) {
+    currentHotel = currentHotel.filter((hotel) => {
+      return (
+        hotel.country.toString().toLowerCase() ===
+        req.query.country.toString().toLowerCase()
+      );
+    });
+  }
+  if (req.query.priceCategory) {
+    currentHotel = currentHotel.filter((hotel) => {
+      return hotel.priceCategory.toString() === req.query.country.toString();
+    });
+  }
+  if (req.query.hasSpa) {
+    currentHotel = currentHotel.filter((hotel) => {
+      return hotel.hasSpa.toString() === req.query.hasSpa.toString();
+    });
+  }
+  if (req.query.hasPool) {
+    currentHotel = currentHotel.filter((hotel) => {
+      return hotel.hasPool.toString() === req.query.hasPool.toString();
+    });
+  }
+  res.json(currentHotel);
 });
 // GET HOTEL BY ID
 router.get("/id/:id", (req, res) => {
