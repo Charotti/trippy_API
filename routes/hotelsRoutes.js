@@ -80,7 +80,6 @@ router.post("/", validHotel, (req, res) => {
   hotels.push(hotel);
   res.status(201).json({ message: "Hotel added", hotel });
 });
-module.exports = router;
 
 //PATCH
 router.patch("/:id", (req, res) => {
@@ -93,3 +92,20 @@ router.patch("/:id", (req, res) => {
   hotel.name = req.body.name;
   res.json({ message: "hotel was updated", hotels });
 });
+
+//DELETE
+router.delete("/:id", (req, res) => {
+  const hotel = hotels.find((hotel) => {
+    return hotel.id.toString() === req.params.id;
+  });
+  if (!hotel) {
+    return res.send(`hotel with id : $ {req.params.id} not found`);
+  }
+  const index = hotels.indexOf(hotel);
+  hotels.splice(index, 1);
+  res.json({
+    message: ` the hotel with id $ {req.params.id} was removed`,
+    hotel,
+  });
+});
+module.exports = router;
