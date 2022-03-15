@@ -48,7 +48,7 @@ const hotelSchema = Joi.object({
   hasPool: Joi.boolean(),
   priceCategory: Joi.number().integer().min(1).max(3).required(),
 });
-function validHotel(req, res, _next) {
+function validHotel(req, res, next) {
   const validation = hotelSchema.validate(req.body);
   if (validation.error) {
     return res.status(400).json({
@@ -56,6 +56,7 @@ function validHotel(req, res, _next) {
       description: validation.error.details[0].message,
     });
   }
+  next();
 }
 
 // GET ALL HOTELS
@@ -80,3 +81,15 @@ router.post("/", validHotel, (req, res) => {
   res.status(201).json({ message: "Hotel added", hotel });
 });
 module.exports = router;
+
+//PATCH
+router.patch("/:id", (req, res) => {
+  const hotel = hotels.find((hotel) => {
+    return hotel.id.toString() === req.params.id;
+  });
+  if (!hotel) {
+    return res.send(`Hotel with id: ${req.params.id} not found`);
+  }
+  hotel.name = req.body.name;
+  res.json({ message: "hotel was updated", hotels });
+});
