@@ -4,6 +4,10 @@ const app = express();
 // ROUTES
 const hotelsRoutes = require("./routes/hotelsRoutes");
 const restaurantsRoutes = require("./routes/restaurantsRoutes");
+const dotenv = require("dotenv");
+dotenv.config({
+  path: "./config.env",
+});
 app.use(express.json());
 app.use("/hotels", hotelsRoutes);
 app.use("/restaurants", restaurantsRoutes);
