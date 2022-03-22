@@ -65,18 +65,14 @@ function validHotel(req, res, next) {
 // GET ALL HOTELS
 router.get("/", async (_req, res) => {
   let hotels = await Postgres.query("SELECT * FROM hotels");
-
   res.json(hotels.rows);
 });
 // GET HOTEL BY ID
-router.get("/id/:id", (req, res) => {
-  const hotel = hotels.find((hotel) => {
-    return hotel.id.toString() === req.params.id;
-  });
-  if (!hotel) {
-    return res.send(`Hotel with id: ${req.params.id} not found`);
-  }
-  res.json(hotel);
+router.get("/id/:id", async (req, res) => {
+  const hotels = await Postgres.query("SELECT * FROM hotels WHERE id=$1", [
+    req.params.id,
+  ]);
+  res.json(hotels.rows);
 });
 // POST AN HOTEL
 router.post("/", validHotel, (req, res) => {
