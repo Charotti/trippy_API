@@ -1,6 +1,8 @@
 const express = require("express");
-const { Pool } = require("pg");
-const Postgres = new Pool({ ssl: { rejectUnauthorized: false } });
+// const { Pool } = require("pg");
+
+const Restaurant = require("../models/restaurantsModel");
+// const Postgres = new Pool({ ssl: { rejectUnauthorized: false } });
 const router = express.Router();
 const Joi = require("Joi");
 
@@ -56,56 +58,122 @@ function validRestaurant(req, res, next) {
   }
   next();
 }
+//POST RESTAURANTS//
+router.post("/", async (req, res) => {
+  let restaurants;
+  // console.log(req.body);
+  try {
+    restaurants = await Restaurant.create(req.body);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("error 400");
+  }
+  res.status(201).json("restaurant created");
+});
 
 // GET ALL RESTAURANTS
-router.get("/", async (_req, res) => {
-  let restaurants = await Postgres.query("SELECT * FROM restaurants");
-  res.json(restaurants.rows);
+// router.get("/", async (_req, res) => {
+//   let restaurants = await Postgres.query("SELECT * FROM restaurants");
+//   res.json(restaurants.rows);
+// });
+
+router.get("/", async (req, res) => {
+  let restaurants;
+  try {
+    restaurants = await Restaurant.find();
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      message: "An error happened",
+    });
+  }
+  res.json(restaurants);
 });
 // GET RESTAURANTS BY ID
+// router.get("/:id", async (req, res) => {
+//   let restaurants = await Postgres.query(
+//     "SELECT id FROM restaurants WHERE id=$1",
+//     [req.params.id]
+//   );
+//   res.json(restaurants.rows);
+// });
+
+//GET RESTAURANTS BY ID AVEC MONGODB//
 router.get("/:id", async (req, res) => {
-  let restaurants = await Postgres.query(
-    "SELECT id FROM restaurants WHERE id=$1",
-    [req.params.id]
-  );
-  res.json(restaurants.rows);
+  let restaurant;
+  try {
+    restaurant = await Restaurant.findById(req.params.id);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send("error 400");
+  }
+  res.json(restaurant);
 });
 // POST AN RESTAURANT
-router.post("/", validRestaurant, (req, res) => {
-  const restaurant = req.body;
-  restaurant.id = restaurants.length + 1;
-  restaurants.push(restaurant);
-  res.json({ message: "Restaurant added", restaurant });
-});
+// router.post("/", validRestaurant, (req, res) => {
+//   const restaurant = req.body;
+//   restaurant.id = restaurants.length + 1;
+//   restaurants.push(restaurant);
+//   res.json({ message: "Restaurant added", restaurant });
+// });
 
 //PATCH
-router.patch("/:id", (req, res) => {
-  const restaurant = restaurants.find((restaurant) => {
-    return restaurant.id.toString() === req.params.id;
-  });
-  if (!restaurant) {
-    return res.send(`Restaurant with id: ${req.params.id} not found`);
+// router.patch("/:id", (req, res) => {
+//   const restaurant = restaurants.find((restaurant) => {
+//     return restaurant.id.toString() === req.params.id;
+//   });
+//   if (!restaurant) {
+//     return res.send(`Restaurant with id: ${req.params.id} not found`);
+//   }
+//   restaurant.name = req.body.name;
+//   res.json({
+//     message: "restaurant was updated:",
+//     restaurant,
+//   });
+// });
+
+//CHANGEMENT NOM DE RESTO AVEC MONGODB//
+router.patch("/:id", async (req, res) => {
+  let restaurant;
+  try {
+    restaurant = await Restaurant.findByIdAndUpdate(req.params.id, {
+      name: req.body.name,
+    });
+  } catch (err) {
+    console.log(error);
+    res.status(400).json({
+      message: "An error happened",
+    });
   }
-  restaurant.name = req.body.name;
-  res.json({
-    message: "restaurant was updated:",
-    restaurant,
-  });
+  res.json({ message: "restaurant updated" });
 });
 
 //DELETE
-router.delete("/:id", (req, res) => {
-  const restaurant = restaurants.find((restaurant) => {
-    return restaurant.id.toString() === req.params.id;
-  });
-  if (!restaurant) {
-    return res.send(`restaurant with id : $ {req.params.id} not found`);
+// router.delete("/:id", (req, res) => {
+//   const restaurant = restaurants.find((restaurant) => {
+//     return restaurant.id.toString() === req.params.id;
+//   });
+//   if (!restaurant) {
+//     return res.send(`restaurant with id : $ {req.params.id} not found`);
+//   }
+//   const index = restaurants.indexOf(restaurant);
+//   restaurants.splice(index, 1);
+//   res.json({
+//     message: ` the restaurant with id $ {req.params.id} was removed`,
+//     restaurant,
+//   });
+// });
+router.delete("/:id", async (req, res) => {
+  let restaurant;
+  try {
+    restaurant = await Restaurant.findByIdAndDelete(req.params.id);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      message: "an error happened",
+    });
   }
-  const index = restaurants.indexOf(restaurant);
-  restaurants.splice(index, 1);
-  res.json({
-    message: ` the restaurant with id $ {req.params.id} was removed`,
-    restaurant,
-  });
+  res.json("restaurant supprimé");
 });
+
 module.exports = router;
