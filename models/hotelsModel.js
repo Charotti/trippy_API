@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const restaurantSchema = new mongoose.Schema({
+const hotelSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -16,8 +16,8 @@ const restaurantSchema = new mongoose.Schema({
   city: {
     type: String,
     required: true,
-    minlength: 3,
-    maxlength: 100,
+    min: 1,
+    max: 5,
   },
   country: {
     type: String,
@@ -31,11 +31,11 @@ const restaurantSchema = new mongoose.Schema({
     min: 1,
     max: 5,
   },
-  cuisine: {
-    type: String,
-    required: true,
-    minlength: 3,
-    maxlength: 100,
+  hasSPa: {
+    type: Boolean,
+  },
+  hasPool: {
+    type: Boolean,
   },
   priceCategory: {
     type: Number,
@@ -43,5 +43,5 @@ const restaurantSchema = new mongoose.Schema({
     max: 3,
   },
 });
-const Restaurant = mongoose.model("restaurants", restaurantSchema);
-module.exports = Restaurant;
+const Hotel = mongoose.model("hotels", hotelSchema);
+module.exports = Hotel;

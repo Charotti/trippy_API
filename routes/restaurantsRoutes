@@ -48,17 +48,17 @@ const restaurantSchema = Joi.object({
   cuisine: Joi.string().required(),
   priceCategory: Joi.number().integer().min(1).max(3).required(),
 });
-function validRestaurant(req, res, next) {
-  const validation = restaurantSchema.validate(req.body);
-  if (validation.error) {
-    return res.status(400).json({
-      message: "Bad request (400)",
-      description: validation.error.details[0].message,
-    });
-  }
-  next();
-}
-//POST RESTAURANTS//
+// function validRestaurant(req, res, next) {
+//   const validation = restaurantSchema.validate(req.body);
+//   if (validation.error) {
+//     return res.status(400).json({
+//       message: "Bad request (400)",
+//       description: validation.error.details[0].message,
+//     });
+//   }
+//   next();
+// }
+//POST RESTAURANTS MONGODB//
 router.post("/", async (req, res) => {
   let restaurants;
   // console.log(req.body);

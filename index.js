@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const mongoose = require("mongoose");
 mongoose
   .connect(
@@ -18,6 +19,7 @@ dotenv.config({
   path: "./config.env",
 });
 app.use(express.json());
+app.use(cors());
 app.use("/hotels", hotelsRoutes);
 app.use("/restaurants", restaurantsRoutes);
 app.use("*", (req, res) => {
