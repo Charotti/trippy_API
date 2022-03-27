@@ -97,6 +97,19 @@ router.get("/", async (req, res) => {
 //   ]);
 //   res.json(hotels.rows);
 // });
+
+router.get("/id/:id", async (req, res) => {
+  let hotels;
+  try {
+    hotels = await Hotel.findById(req.params.id);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      message: "an error happened",
+    });
+  }
+  res.json(hotels);
+});
 // POST AN HOTEL
 // router.post("/", validHotel, (req, res) => {
 //   const hotel = req.body;
