@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const restaurantSchema = new mongoose.Schema({
   name: {
     type: String,
-
     minlength: 3,
     maxlength: 100,
   },

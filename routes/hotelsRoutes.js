@@ -131,8 +131,11 @@ router.get("/id/:id", async (req, res) => {
 // });
 router.patch("/:id", async (req, res) => {
   let hotel;
+  console.log(req.body.name);
   try {
-    hotel = Hotel.findByIdAndUpdate(req.params.id, { name: req.body.name });
+    hotel = await Hotel.findByIdAndUpdate(req.params.id, {
+      name: req.body.name,
+    });
   } catch (err) {
     console.log(err);
     res.status(400).json({
