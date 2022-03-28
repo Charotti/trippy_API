@@ -129,6 +129,18 @@ router.get("/id/:id", async (req, res) => {
 //   hotel.name = req.body.name;
 //   res.json({ message: "hotel was updated", hotels });
 // });
+router.patch("/:id", async (req, res) => {
+  let hotel;
+  try {
+    hotel = Hotel.findByIdAndUpdate(req.params.id, { name: req.body.name });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      message: "an error happened",
+    });
+  }
+  res.json({ message: "hotel updated" });
+});
 
 //DELETE
 // router.delete("/:id", (req, res) => {
@@ -145,4 +157,16 @@ router.get("/id/:id", async (req, res) => {
 //     hotel,
 //   });
 // });
+router.delete("/:id", async (req, res) => {
+  let hotels;
+  try {
+    hotels = await Hotel.findByIdAndDelete(req.params.id);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      message: "an error happened",
+    });
+  }
+  res.json({ message: "hotel delete" });
+});
 module.exports = router;
