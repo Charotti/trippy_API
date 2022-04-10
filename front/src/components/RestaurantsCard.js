@@ -10,7 +10,7 @@ import React from "react";
 //     cuisine: "french",
 //     priceCategory: 3,
 //   },
-export default function Card({ restaurant }) {
+export default function RestaurantsCard({ restaurant }) {
   return (
     //rajouter les 2 accolades et "" pour la valeur//
     //Card restau
