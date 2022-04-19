@@ -15,13 +15,15 @@ export default function Restaurants() {
 
   return (
     <>
-      <div>
-        {restaurants.map((restaurant) => {
-          //clé (unique) correspond à _id de la base de donnée//
-          return (
-            <RestaurantsCard key={restaurant._id} restaurant={restaurant} />
-          );
-        })}
+      <div className="container">
+        <div className="d-flex flex-row justify-content-around my-4">
+          {restaurants.map((restaurant) => {
+            //clé (unique) correspond à _id de la base de donnée//
+            return (
+              <RestaurantsCard key={restaurant._id} restaurant={restaurant} />
+            );
+          })}
+        </div>
       </div>
     </>
   );

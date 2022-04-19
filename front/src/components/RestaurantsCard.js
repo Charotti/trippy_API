@@ -14,10 +14,15 @@ export default function RestaurantsCard({ restaurant }) {
   return (
     //rajouter les 2 accolades et "" pour la valeur//
     //Card restau
-    <div className="card" style={{ width: "18rem" }}>
+    <div className="container">
+      {/* <div className="col-3"> */}
+      {/* <div className="card" style={{ width: "18rem" }}> */}
+      <div className="carte-header">
+        <img src="https://tse4.mm.bing.net/th?id=OIP.HJR1Hok5vZxpOP0XPn8F5gHaHa&pid=Api&P=0&w=178&h=178" />
+      </div>
       <div className="card-body">
         <h5 className="card-title">{restaurant.name}</h5>
-        <h6 className="card-subtitle mb-2 text-muted">
+        <h6 className="card-subtitle mb-2 text-white">
           {restaurant.city}, {restaurant.country}
         </h6>
         <p className="card-text">adresse : {restaurant.address}</p>
@@ -33,6 +38,8 @@ export default function RestaurantsCard({ restaurant }) {
           Another link
         </a> */}
       </div>
+      {/* </div> */}
     </div>
+    // </div>
   );
 }
