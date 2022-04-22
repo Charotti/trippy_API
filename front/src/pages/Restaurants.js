@@ -16,7 +16,7 @@ export default function Restaurants() {
   return (
     <>
       <div className="container">
-        <div className="d-flex flex-row justify-content-around my-4">
+        <div className="d-flex align-items-center vh-100">
           {restaurants.map((restaurant) => {
             //clé (unique) correspond à _id de la base de donnée//
             return (
