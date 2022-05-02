@@ -11,6 +11,7 @@ import React from "react";
 //     priceCategory: 3,
 //   },
 export default function RestaurantsCard({ restaurant }) {
+  console.log(restaurant);
   return (
     //rajouter les 2 accolades et "" pour la valeur//
     //Card restau
@@ -33,12 +34,13 @@ export default function RestaurantsCard({ restaurant }) {
             <p className="card-text">
               Catégorie de prix: {restaurant.priceCategory}
             </p>
-            {/* <a href="#" className="card-link">
-          Card link
-        </a>
-        <a href="#" className="card-link">
-          Another link
-        </a> */}
+            <a
+              className="btn btn-primary"
+              href={`/restaurants/${restaurant._id}`}
+              role="button"
+            >
+              Link
+            </a>
           </div>
         </div>
       </div>
